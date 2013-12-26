@@ -4,7 +4,6 @@ import remote.Remote
 import java.util.ArrayList
 
 object Server extends App {
-  val obj = Remote(new ArrayList[String])
-  java.rmi.Naming.rebind("obj", obj)
+  Remote.rebind("obj", new ArrayList[String])
   println("obj bound in registry")
 }
