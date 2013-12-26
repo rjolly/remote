@@ -47,7 +47,7 @@
   </target>
 
   <target name="test">
-    <java classpath="remote.jar" classname="remote.client.MyApp">
+    <java classpath="remote.jar" classname="remote.client.Sample">
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
     </java>
