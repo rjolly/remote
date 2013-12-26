@@ -1,6 +1,6 @@
 package remote.client
 
-import remote.Remote
+import remote.{Remote, Lazy}
 import remote.server.{Employee, Department, SalaryOrdering}
 import java.text.NumberFormat
 import java.util.{Collection, SortedSet, TreeSet}
@@ -65,17 +65,26 @@ object Sample extends App {
 
   // Query
 
-  for (employees <- obj) yield {
-    val format = NumberFormat.getCurrencyInstance()
-    val average = Employee("", null, null, 24878.0, null)
+  val format = NumberFormat.getCurrencyInstance()
 
-    for (e <- employees.iterator if e.salary < average.salary) println(e + " " + format.format(e.salary))
-
-    val bySalary: SortedSet[Employee] = new TreeSet[Employee](SalaryOrdering)
-    bySalary.addAll(employees)
-
-    println()
-
-    for (e <- bySalary.tailSet(average).iterator) println(e + " " + format.format(e.salary))
+  val avg = for (employees <- obj) yield {
+    val n = employees.size
+    val s = employees.iterator.map(_.salary).sum
+    Employee("", Department(""), null, s / n , null)
   }
+
+  println(avg.get.salary)
+
+  (for (o <- Lazy(obj); fmt <- Lazy(format)) yield {
+    for (average <- avg; employees <- o) yield {
+      for (e <- employees.iterator if e.salary < average.salary) println(e + " " + fmt.format(e.salary))
+
+      val bySalary: SortedSet[Employee] = new TreeSet[Employee](SalaryOrdering)
+      bySalary.addAll(employees)
+
+      println()
+
+      for (e <- bySalary.tailSet(average).iterator) println(e + " " + fmt.format(e.salary))
+    }
+  }).get
 }
