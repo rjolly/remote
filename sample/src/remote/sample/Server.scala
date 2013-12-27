@@ -1,4 +1,4 @@
-package remote.server
+package remote.sample
 
 import remote.Remote
 import java.util.ArrayList

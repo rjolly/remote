@@ -1,7 +1,6 @@
-package remote.client
+package remote.sample
 
 import remote.Remote
-import remote.server.{Employee, Department, SalaryOrdering}
 import java.text.NumberFormat
 import java.util.{Collection, SortedSet, TreeSet}
 import scala.language.implicitConversions

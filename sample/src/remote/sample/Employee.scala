@@ -1,4 +1,4 @@
-package remote.server
+package remote.sample
 
 case class Employee(name: String,
                     var department: Department = null,

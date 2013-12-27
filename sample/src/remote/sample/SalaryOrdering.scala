@@ -1,4 +1,4 @@
-package remote.server
+package remote.sample
 
 object SalaryOrdering extends Ordering[Employee] {
   def compare(x: Employee, y: Employee) = {

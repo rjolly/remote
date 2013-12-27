@@ -37,7 +37,7 @@
   </target>
 
   <target name="run">
-    <java fork="true" classpath="sample.jar" classname="remote.server.Server">
+    <java fork="true" classpath="sample.jar" classname="remote.sample.Server">
       <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/sample.jar"/>
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
@@ -45,7 +45,7 @@
   </target>
 
   <target name="test">
-    <java classpath="sample.jar" classname="remote.client.Sample">
+    <java classpath="sample.jar" classname="remote.sample.Sample">
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
     </java>
