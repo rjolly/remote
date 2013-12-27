@@ -6,12 +6,10 @@ import java.util.{Collection, SortedSet, TreeSet}
 import scala.language.implicitConversions
 import scala.collection.convert.WrapAsScala.iterableAsScalaIterable
 
-object Sample extends App {
+object Sample {
   val obj = Remote.lookup[Collection[Employee]]("obj")
 
-  // Populate
-
-  for (employees <- obj) yield {
+  def populate = for (employees <- obj) yield {
     val accounting = Department("Accounting")
     val research = Department("Research")
     val sales = Department("Sales")
@@ -51,10 +49,9 @@ object Sample extends App {
     }
   }
 
-  // Query
-
   val format = NumberFormat.getCurrencyInstance()
 
+  def query = {
   val avg = for (employees <- obj) yield {
     val n = employees.size
     val s = employees.map(_.salary).sum
@@ -73,4 +70,5 @@ object Sample extends App {
       for (e <- bySalary.tailSet(average)) println(e + " " + fmt.format(e.salary))
     }
   }).get
+  }
 }
