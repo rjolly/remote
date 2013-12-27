@@ -6,10 +6,14 @@ Software needed:
 
 To build the project:
   ant
-  ant clean
 
 
-To run the project:
+To build the sample:
+  cd sample
+  ant
+
+
+To run the sample:
   ant registry
 , then in a new window:
   ant run

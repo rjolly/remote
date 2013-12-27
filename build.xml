@@ -9,48 +9,28 @@
     <pathelement location="${scala.home}/lib/scala-library.jar"/>
   </path>
 
+  <path id="build.classpath">
+    <pathelement location="${scala.home}/lib/scala-library.jar"/>
+  </path>
+
   <taskdef resource="scala/tools/ant/antlib.xml">
     <classpath refid="scala.classpath"/>
   </taskdef>
 
-  <target name="init">
-    <copy file="${scala.home}/lib/scala-library.jar" todir="lib"/>
-  </target>
-
-  <target name="compile" depends="init">
+  <target name="compile">
     <mkdir dir="classes"/>
     <scalac srcdir="src"
             destdir="classes"
-            classpath="lib/scala-library.jar"/>
+            classpathref="build.classpath"/>
     <rmic base="classes"
           classname="remote.RemoteImpl"
-          classpath="lib/scala-library.jar"/>
+          classpathref="build.classpath"/>
   </target>
 
   <target name="jar" depends="compile">
     <jar destfile="remote.jar"
-         manifest="manifest.mf"
          basedir="classes"
          compress="false"/>
-  </target>
-
-  <target name="registry">
-    <java fork="true" classname="sun.rmi.registry.RegistryImpl"/>
-  </target>
-
-  <target name="run">
-    <java fork="true" classpath="remote.jar" classname="remote.server.Server">
-      <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/remote.jar"/>
-      <sysproperty key="java.security.manager" value=""/>
-      <sysproperty key="java.security.policy" value="policy"/>
-    </java>
-  </target>
-
-  <target name="test">
-    <java classpath="remote.jar" classname="remote.client.Sample">
-      <sysproperty key="java.security.manager" value=""/>
-      <sysproperty key="java.security.policy" value="policy"/>
-    </java>
   </target>
 
   <target name="clean">
