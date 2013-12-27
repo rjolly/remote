@@ -1,4 +1,4 @@
-package remote
+package remote.client
 
 trait Lazy[T] {
   def map[S](f: T => S) = Lazy(f(get))

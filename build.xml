@@ -23,7 +23,7 @@
             destdir="classes"
             classpathref="build.classpath"/>
     <rmic base="classes"
-          classname="remote.RemoteImpl"
+          classname="remote.Remote.Impl"
           classpathref="build.classpath"/>
   </target>
 
