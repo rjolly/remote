@@ -1,16 +1,11 @@
 package remote
 
-import java.rmi.{Naming, RemoteException}
+import java.rmi.Naming
 import java.rmi.server.UnicastRemoteObject
 
-trait Remote[T] extends java.rmi.Remote {
-  @throws[RemoteException]
+@remote trait Remote[T] extends java.rmi.Remote {
   def map[S](f: T => S): Remote[S]
-
-  @throws[RemoteException]
   def flatMap[S](f: T => Remote[S]): Remote[S]
-
-  @throws[RemoteException]
   def get: T
 }
 

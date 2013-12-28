@@ -49,16 +49,15 @@ object Sample {
     }
   }
 
-  val format = NumberFormat.getCurrencyInstance()
-
-  def query = {
-  val avg = for (employees <- obj) yield {
+  def average = for (employees <- obj) yield {
     val n = employees.size
     val s = employees.map(_.salary).sum
     Employee(name = "", salary = s / n)
   }
 
-  (for (emp <- Lazy(obj); fmt <- Lazy(format)) yield {
+  val format = NumberFormat.getCurrencyInstance()
+
+  def query(avg: Remote[Employee]) = (for (emp <- Lazy(obj); fmt <- Lazy(format)) yield {
     for (average <- avg; employees <- emp) yield {
       for (e <- employees if e.salary < average.salary) println(e + " " + fmt.format(e.salary))
 
@@ -70,5 +69,4 @@ object Sample {
       for (e <- bySalary.tailSet(average)) println(e + " " + fmt.format(e.salary))
     }
   }).get
-  }
 }
