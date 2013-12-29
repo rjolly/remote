@@ -41,6 +41,7 @@
       <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/sample.jar"/>
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
+      <sysproperty key="scala.home" value="${scala.home}"/>
     </java>
   </target>
 
@@ -48,6 +49,7 @@
     <java classpath="sample.jar" classname="remote.sample.Client">
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
+      <sysproperty key="scala.home" value="${scala.home}"/>
     </java>
   </target>
 
