@@ -1,4 +1,4 @@
-<project name="remote" default="jar">
+<project name="sample" default="jar">
 
   <property environment="env"/>
   <property name="scala.home" value="${env.SCALA_HOME}"/>
@@ -33,7 +33,9 @@
   </target>
 
   <target name="registry">
-    <java fork="true" classname="sun.rmi.registry.RegistryImpl"/>
+    <java fork="true" classname="sun.rmi.registry.RegistryImpl">
+      <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/sample.jar"/>
+    </java>
   </target>
 
   <target name="run">

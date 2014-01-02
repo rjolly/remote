@@ -4,3 +4,5 @@ sample/lib
 sample/classes
 sample/sample.jar
 sample/sample.ser
+/nbproject/private/
+/sample/nbproject/private/
