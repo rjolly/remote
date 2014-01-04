@@ -78,4 +78,8 @@ public final class RemoteImpl_Stub
 	    throw new java.rmi.UnexpectedException("undeclared checked exception", e);
 	}
     }
+
+    public Object readResolve() throws java.io.ObjectStreamException {
+        return Remote$.MODULE$.replace(this);
+    }
 }

@@ -1,6 +1,8 @@
 package remote
 
+import java.lang.ref.{Reference, WeakReference}
 import java.rmi.Naming
+import java.util.{Map, WeakHashMap}
 
 @remote trait Remote[T] extends java.rmi.Remote {
   def map[S](f: T => S): Remote[S]
@@ -9,7 +11,19 @@ import java.rmi.Naming
 }
 
 object Remote {
-  def apply[T](value: T): Remote[T] = new RemoteImpl(value)
+  val cache: Map[java.rmi.Remote, Reference[java.rmi.Remote]] = new WeakHashMap[java.rmi.Remote, Reference[java.rmi.Remote]]()
+
+  def apply[T](value: T): Remote[T] = {
+    val obj = new RemoteImpl(value)
+    cache.put(obj, new WeakReference(obj))
+    obj
+  }
+
+  def replace[T](obj: Remote[T]): java.rmi.Remote = {
+    val w = cache.get(obj)
+    if (w == null) obj else w.get()
+  }
+
   def rebind[T](name: String, value: T) = Naming.rebind(name, apply(value))
   def lookup[T](name: String) = Naming.lookup(name).asInstanceOf[Remote[T]]
 }
