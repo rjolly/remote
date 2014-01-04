@@ -26,11 +26,14 @@
     <scalac srcdir="src"
             destdir="classes"
             classpathref="build.classpath"/>
-    <rmic base="classes"
+    <javac srcdir="src"
+            destdir="classes"
+            classpathref="build.classpath"/>
+    <!--rmic base="classes"
           sourcebase="src"
           stubversion="1.2"
-          classname="remote.Remote.Impl"
-          classpathref="build.classpath"/>
+          classname="remote.RemoteImpl"
+          classpathref="build.classpath"/-->
   </target>
 
   <target name="jar" depends="compile, init">
