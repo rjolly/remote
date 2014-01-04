@@ -27,6 +27,8 @@
             destdir="classes"
             classpathref="build.classpath"/>
     <rmic base="classes"
+          sourcebase="src"
+          stubversion="1.2"
           classname="remote.Remote.Impl"
           classpathref="build.classpath"/>
   </target>
