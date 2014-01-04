@@ -11,7 +11,7 @@ import java.util.{Map, WeakHashMap}
 }
 
 object Remote {
-  val cache: Map[java.rmi.Remote, Reference[java.rmi.Remote]] = new WeakHashMap[java.rmi.Remote, Reference[java.rmi.Remote]]()
+  val cache: Map[java.rmi.Remote, Reference[Object]] = new WeakHashMap[java.rmi.Remote, Reference[Object]]()
 
   def apply[T](value: T): Remote[T] = {
     val obj = new RemoteImpl(value)
@@ -19,7 +19,7 @@ object Remote {
     obj
   }
 
-  def replace[T](obj: Remote[T]): java.rmi.Remote = {
+  def replace[T](obj: Remote[T]): Object = {
     val w = cache.get(obj)
     if (w == null) obj else w.get()
   }

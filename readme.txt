@@ -6,6 +6,7 @@ Software needed:
 
 To build the project:
   ant
+  ant clean
 
 
 To run the sample:

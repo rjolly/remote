@@ -44,6 +44,7 @@ object Sample {
     clark.manager = king
     miller.manager = clark
 
+    employees.clear()
     List(clark, king, miller, smith, adams, ford, scott, jones, allen, blake, martin, james, turner, ward) foreach {
       employees.add(_)
     }
@@ -69,4 +70,20 @@ object Sample {
       for (e <- bySalary.tailSet(average)) println(e + " " + fmt.format(e.salary))
     }
   }).get
+
+  def select(name: String) = for (employees <- obj) yield {
+    employees.find(_.name == name).orNull
+  }
+
+  def setManager(emp1: Remote[Employee], emp2: Remote[Employee]) = {
+    for (e2 <- emp2; e1 <- emp1) yield {
+      e1.manager = e2
+    }
+  }
+
+  def setSalary(emp: Remote[Employee], value: Double) = {
+    for (e <- emp) yield {
+      e.salary = value
+    }
+  }
 }
