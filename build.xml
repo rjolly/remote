@@ -17,6 +17,10 @@
     <classpath refid="scala.classpath"/>
   </taskdef>
 
+  <target name="init">
+    <copy file="${scala.home}/lib/scala-library.jar" todir="lib"/>
+  </target>
+
   <target name="compile">
     <mkdir dir="classes"/>
     <scalac srcdir="src"
@@ -27,10 +31,34 @@
           classpathref="build.classpath"/>
   </target>
 
-  <target name="jar" depends="compile">
+  <target name="jar" depends="compile, init">
     <jar destfile="remote.jar"
+         manifest="manifest.mf"
          basedir="classes"
          compress="false"/>
+  </target>
+
+  <target name="registry">
+    <java fork="true" classname="sun.rmi.registry.RegistryImpl">
+      <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/remote.jar"/>
+    </java>
+  </target>
+
+  <target name="run">
+    <java fork="true" classpath="remote.jar" classname="remote.sample.Server">
+      <sysproperty key="java.rmi.server.codebase" value="file:${basedir}/remote.jar"/>
+      <sysproperty key="java.security.manager" value=""/>
+      <sysproperty key="java.security.policy" value="policy"/>
+      <sysproperty key="scala.home" value="${scala.home}"/>
+    </java>
+  </target>
+
+  <target name="test">
+    <java classpath="remote.jar" classname="remote.sample.Client">
+      <sysproperty key="java.security.manager" value=""/>
+      <sysproperty key="java.security.policy" value="policy"/>
+      <sysproperty key="scala.home" value="${scala.home}"/>
+    </java>
   </target>
 
   <target name="clean">

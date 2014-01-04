@@ -5,7 +5,7 @@ import java.io.{File, FileInputStream, FileOutputStream, ObjectInputStream, Obje
 import java.util.{ArrayList, Collection}
 
 object Server extends App {
-  val file = new File("sample.ser")
+  val file = new File("remote.ser")
   val employees = if (file.exists) {
     println("reading state")
     val is = new ObjectInputStream(new FileInputStream(file))

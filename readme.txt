@@ -8,11 +8,6 @@ To build the project:
   ant
 
 
-To build the sample:
-  cd sample
-  ant
-
-
 To run the sample:
   ant registry
 , then in a new window:
