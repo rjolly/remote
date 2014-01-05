@@ -1,5 +1,5 @@
 package remote.sample
 
-case class Department(name: String) {
+class Department(val name: String) extends Serializable {
   override def toString = name
 }

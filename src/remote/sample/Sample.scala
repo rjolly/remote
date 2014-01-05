@@ -2,32 +2,32 @@ package remote.sample
 
 import remote.Remote
 import java.text.NumberFormat
-import java.util.{Collection, SortedSet, TreeSet}
+import java.util.{SortedSet, TreeSet}
 import scala.language.implicitConversions
 import scala.collection.convert.WrapAsScala.iterableAsScalaIterable
 
 object Sample {
-  val obj = Remote.lookup[Collection[Employee]]("obj")
+  val obj = Remote.lookup[Company]("obj")
 
-  def populate = for (employees <- obj) yield {
-    val accounting = Department("Accounting")
-    val research = Department("Research")
-    val sales = Department("Sales")
+  def populate = for (company <- obj) yield {
+    val accounting = company.createDepartment("Accounting")
+    val research = company.createDepartment("Research")
+    val sales = company.createDepartment("Sales")
 
-    val clark = Employee("Clark", accounting, "New York", 29400.0, null, "Manager")
-    val king = Employee("King", accounting, "New York", 60000.0, null, "President")
-    val miller = Employee("Miller", accounting, "New York", 15600.0, null, "Clerk")
-    val smith = Employee("Smith", research, "New York", 11400.0, null, "Clerk")
-    val adams = Employee("Adams", research, "New York", 11400.0, null, "Clerk")
-    val ford = Employee("Ford", research, "New York", 36000.0, null, "Analyst")
-    val scott = Employee("Scott", research, "New York", 36000.0, null, "Analyst")
-    val jones = Employee("Jones", research, "New York", 35700.0, null, "Manager")
-    val allen = Employee("Allen", sales, "New York", 16800.0, null, "Salesman")
-    val blake = Employee("Blake", sales, "New York", 34200.0, null, "Manager")
-    val martin = Employee("Martin", sales, "New York", 16800.0, null, "Salesman")
-    val james = Employee("James", sales, "New York", 11400.0, null, "Clerk")
-    val turner = Employee("Turner", sales, "New York", 16800.0, null, "Salesman")
-    val ward = Employee("Ward", sales, "New York", 16800.0, null, "Salesman")
+    val clark = company.createEmployee("Clark", accounting, "New York", 29400.0, null, "Manager")
+    val king = company.createEmployee("King", accounting, "New York", 60000.0, null, "President")
+    val miller = company.createEmployee("Miller", accounting, "New York", 15600.0, null, "Clerk")
+    val smith = company.createEmployee("Smith", research, "New York", 11400.0, null, "Clerk")
+    val adams = company.createEmployee("Adams", research, "New York", 11400.0, null, "Clerk")
+    val ford = company.createEmployee("Ford", research, "New York", 36000.0, null, "Analyst")
+    val scott = company.createEmployee("Scott", research, "New York", 36000.0, null, "Analyst")
+    val jones = company.createEmployee("Jones", research, "New York", 35700.0, null, "Manager")
+    val allen = company.createEmployee("Allen", sales, "New York", 16800.0, null, "Salesman")
+    val blake = company.createEmployee("Blake", sales, "New York", 34200.0, null, "Manager")
+    val martin = company.createEmployee("Martin", sales, "New York", 16800.0, null, "Salesman")
+    val james = company.createEmployee("James", sales, "New York", 11400.0, null, "Clerk")
+    val turner = company.createEmployee("Turner", sales, "New York", 16800.0, null, "Salesman")
+    val ward = company.createEmployee("Ward", sales, "New York", 16800.0, null, "Salesman")
 
     king.manager = king
     jones.manager = king
@@ -44,22 +44,25 @@ object Sample {
     clark.manager = king
     miller.manager = clark
 
+    import company.employees
     employees.clear()
     List(clark, king, miller, smith, adams, ford, scott, jones, allen, blake, martin, james, turner, ward) foreach {
       employees.add(_)
     }
   }
 
-  def average = for (employees <- obj) yield {
+  def average = for (company <- obj) yield {
+    import company.employees
     val n = employees.size
     val s = employees.map(_.salary).sum
-    Employee(name = "", salary = s / n)
+    company.createEmployee(name = "", salary = s / n)
   }
 
   val format = NumberFormat.getCurrencyInstance()
 
-  def query(avg: Remote[Employee]) = (for (emp <- Lazy(obj); fmt <- Lazy(format)) yield {
-    for (average <- avg; employees <- emp) yield {
+  def query(avg: Remote[Employee]) = (for (comp <- Lazy(obj); fmt <- Lazy(format)) yield {
+    for (average <- avg; company <- comp) yield {
+      import company.employees
       for (e <- employees if e.salary < average.salary) println(e + " " + fmt.format(e.salary))
 
       val bySalary: SortedSet[Employee] = new TreeSet[Employee](SalaryOrdering)
@@ -71,7 +74,8 @@ object Sample {
     }
   }).get
 
-  def select(name: String) = for (employees <- obj) yield {
+  def select(name: String) = for (company <- obj) yield {
+    import company.employees
     employees.find(_.name == name).orNull
   }
 
