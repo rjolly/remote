@@ -26,4 +26,9 @@ object Remote {
 
   def rebind[T](name: String, value: T) = Naming.rebind(name, apply(value))
   def lookup[T](name: String) = Naming.lookup(name).asInstanceOf[Remote[T]]
+
+  trait Stub[T] {
+    def value: Remote[T]
+    override def toString = (for (obj <- value) yield obj.toString).get
+  }
 }
