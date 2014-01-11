@@ -2,7 +2,6 @@ package remote.sample
 
 import remote.Remote
 import java.text.NumberFormat
-import java.util.{SortedSet, TreeSet}
 import scala.language.implicitConversions
 import scala.collection.convert.WrapAsScala.iterableAsScalaIterable
 
@@ -65,7 +64,7 @@ object Sample {
       import company.employees
       for (e <- employees if e.salary < average.salary) println(e + " " + fmt.format(e.salary))
 
-      val bySalary: SortedSet[Employee] = new TreeSet[Employee](SalaryOrdering)
+      val bySalary: java.util.SortedSet[Employee] = new java.util.TreeSet[Employee](SalaryOrdering)
       bySalary.addAll(employees)
 
       println()

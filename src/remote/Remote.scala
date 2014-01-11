@@ -4,7 +4,7 @@ import java.lang.ref.{Reference, WeakReference}
 import java.rmi.Naming
 import java.util.{Map, WeakHashMap}
 
-@remote trait Remote[T] extends java.rmi.Remote {
+@remote trait Remote[+T] extends java.rmi.Remote {
   def map[S](f: T => S): Remote[S]
   def flatMap[S](f: T => Remote[S]): Remote[S]
   def get: T

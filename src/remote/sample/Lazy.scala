@@ -1,6 +1,6 @@
 package remote.sample
 
-trait Lazy[T] {
+trait Lazy[+T] {
   def map[S](f: T => S) = Lazy(f(get))
   def flatMap[S](f: T => Lazy[S]) = f(get)
   def get: T
