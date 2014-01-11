@@ -58,7 +58,7 @@
   </target>
 
   <target name="test">
-    <java classpathref="run.classpath" classname="remote.sample.Client">
+    <java classpathref="run.classpath" classname="remote.sample.Sample">
       <sysproperty key="java.security.manager" value=""/>
       <sysproperty key="java.security.policy" value="policy"/>
       <sysproperty key="scala.home" value="${scala.home}"/>

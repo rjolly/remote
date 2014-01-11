@@ -2,17 +2,19 @@ package remote.sample
 
 import remote.Remote
 
-class Employee(val name: String,
-               var department: Department,
-               var location: String,
-               var salary: Double,
-               var manager: Employee,
-               var job: String) extends Ordered[Employee] with Serializable {
+class Employee(val name: String) extends Ordered[Employee] with Serializable {
+  var department: Department = _
+  var location: String = _
+  var salary: Double = _
+  var manager: Employee = _
+  var job: String = _
   override def toString = name + " (" + department + ")"
   def compare(that: Employee) = this.name compare that.name
 }
 
 object Employee {
+  def apply(name: String)(implicit context: Remote[Company]) = for (obj <- context) yield new Employee(name)
+
   implicit class Stub(val value: Remote[Employee]) extends Remote.Stub[Employee] {
     def name = (for (obj <- value) yield obj.name).get
     def department = for (obj <- value) yield obj.department
