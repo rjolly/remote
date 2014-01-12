@@ -1,10 +1,10 @@
 package remote.sample
 
 import remote.Remote
-import java.util.ArrayList
+import java.util.{ArrayList, Collections}
 
 class Company extends Serializable {
-  val employees: java.util.Collection[Employee] = new ArrayList[Employee]
+  val employees = Collections.synchronizedCollection(new ArrayList[Employee])
 }
 
 object Company {

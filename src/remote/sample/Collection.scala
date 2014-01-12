@@ -15,24 +15,29 @@ object Collection {
     def toArray = (for (obj <- value) yield obj.toArray).get
     def toArray[A](a: Array[A with Object]) = (for (obj <- value) yield obj.toArray(a)).get
     def add(e: Remote[E]) = (for (obj <- value; elem <- e) yield obj.add(elem)).get
-    def remove(o: Object) = ???
-    def containsAll(c: java.util.Collection[_]) = ???
-    def addAll(c: java.util.Collection[_ <: Remote[E]]) = ???
-    def removeAll(c: java.util.Collection[_]) = ???
-    def retainAll(c: java.util.Collection[_]) = ???
-    def remove(e: Remote[E]) = (for (obj <- value; elem <- e) yield obj.remove(elem)).get
-    def containsAll(c: Stub[E]) = (for (co <- Lazy(c.value)) yield {
-      (for (obj <- value; coll <- co) yield obj.containsAll(coll)).get
-    }).get
-    def addAll(c: Stub[E]) = (for (co <- Lazy(c.value)) yield {
-      (for (obj <- value; coll <- co) yield obj.addAll(coll)).get
-    }).get
-    def removeAll(c: Stub[E]) = (for (co <- Lazy(c.value)) yield {
-      (for (obj <- value; coll <- co) yield obj.removeAll(coll)).get
-    }).get
-    def retainAll(c: Stub[E]) = (for (co <- Lazy(c.value)) yield {
-      (for (obj <- value; coll <- co) yield obj.retainAll(coll)).get
-    }).get
+    def remove(o: Object) = o match {
+      case e: Remote[E] => (for (obj <- value; elem <- e) yield obj.remove(elem)).get
+    }
+    def containsAll(c: java.util.Collection[_]) = c match {
+      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+        (for (obj <- value; coll <- co) yield obj.containsAll(coll)).get
+      }).get
+    }
+    def addAll(c: java.util.Collection[_ <: Remote[E]]) = c match {
+      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+        (for (obj <- value; coll <- co) yield obj.addAll(coll)).get
+      }).get
+    }
+    def removeAll(c: java.util.Collection[_]) = c match {
+      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+        (for (obj <- value; coll <- co) yield obj.removeAll(coll)).get
+      }).get
+    }
+    def retainAll(c: java.util.Collection[_]) = c match {
+      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+        (for (obj <- value; coll <- co) yield obj.retainAll(coll)).get
+      }).get
+    }
     def clear = (for (obj <- value) yield obj.clear).get
   }
 }

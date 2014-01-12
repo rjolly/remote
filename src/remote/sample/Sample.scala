@@ -4,11 +4,10 @@ import remote.Remote
 import java.text.NumberFormat
 import scala.language.implicitConversions
 import scala.collection.convert.WrapAsScala.iterableAsScalaIterable
-import Implicits.{remote2collection, remote2sortedSet}
 
 object Sample extends App {
   implicit val company = Remote.lookup[Company]("obj")
-  val employees = company.employees
+  val employees = Collection.Stub(company.employees)
 
   // Populate
 
@@ -136,10 +135,10 @@ object Sample extends App {
 
   val average = Employee("")
   val n = employees.size
-  val s = Collection.Stub(employees).map(_.salary).sum
+  val s = employees.map(_.salary).sum
   average.salary = s / n
 
-  for (e <- Collection.Stub(employees) if e.salary < average.salary) println(Employee.Stub(e) + " " + format.format(e.salary))
+  for (e <- employees if e.salary < average.salary) println(Employee.Stub(e) + " " + format.format(e.salary))
 
   val bySalary = SortedSet(Comparator.bySalary)
   bySalary.addAll(employees)
