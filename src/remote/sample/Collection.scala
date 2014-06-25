@@ -19,24 +19,28 @@ object Collection {
       case e: Remote[E] => (for (obj <- value; elem <- e) yield obj.remove(elem)).get
     }
     def containsAll(c: java.util.Collection[_]) = c match {
-      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+      case c: Stub[E] => {
+        val co = c.value
         (for (obj <- value; coll <- co) yield obj.containsAll(coll)).get
-      }).get
+      }
     }
     def addAll(c: java.util.Collection[_ <: Remote[E]]) = c match {
-      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+      case c: Stub[E] => {
+        val co = c.value
         (for (obj <- value; coll <- co) yield obj.addAll(coll)).get
-      }).get
+      }
     }
     def removeAll(c: java.util.Collection[_]) = c match {
-      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+      case c: Stub[E] => {
+        val co = c.value
         (for (obj <- value; coll <- co) yield obj.removeAll(coll)).get
-      }).get
+      }
     }
     def retainAll(c: java.util.Collection[_]) = c match {
-      case c: Stub[E] => (for (co <- Lazy(c.value)) yield {
+      case c: Stub[E] => {
+        val co = c.value
         (for (obj <- value; coll <- co) yield obj.retainAll(coll)).get
-      }).get
+      }
     }
     def clear = (for (obj <- value) yield obj.clear).get
   }

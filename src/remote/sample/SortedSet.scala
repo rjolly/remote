@@ -6,9 +6,10 @@ import Implicits.remote2comparator
 
 object SortedSet {
   def apply[E](comparator: java.util.Comparator[Remote[E]])(implicit context: Remote[Company]): java.util.SortedSet[Remote[E]] = comparator match {
-    case comparator: Comparator.Stub[E] => (for (cmp <- Lazy(comparator.value)) yield {
+    case comparator: Comparator.Stub[E] => {
+      val cmp = comparator.value
       for (obj <- context; comp <- cmp) yield new TreeSet(comp)
-    }).get
+    }
   }
 
   implicit class Stub[E](val value: Remote[java.util.SortedSet[E]]) extends Remote.Stub[java.util.SortedSet[E]] with StubLike[E]
