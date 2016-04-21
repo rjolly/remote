@@ -9,6 +9,11 @@ To build the project:
   ant clean
 
 
+To build the sample:
+  cd sample
+  ant compile
+
+
 To run the sample:
   ant registry
 , then in a new window:

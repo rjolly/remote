@@ -1,7 +1,8 @@
-<project name="remote" default="jar">
+<project name="remote" default="run">
 
   <property environment="env"/>
   <property name="scala.home" value="${env.SCALA_HOME}"/>
+  <property name="remote.home" value=".."/>
 
   <path id="scala.classpath">
     <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
@@ -11,6 +12,12 @@
 
   <path id="build.classpath">
     <pathelement location="${scala.home}/lib/scala-library.jar"/>
+    <pathelement location="${remote.home}/remote.jar"/>
+  </path>
+
+  <path id="run.classpath">
+    <path refid="build.classpath"/>
+    <pathelement location="classes"/>
   </path>
 
   <taskdef resource="scala/tools/ant/antlib.xml">
@@ -22,20 +29,20 @@
     <scalac srcdir="src"
             destdir="classes"
             classpathref="build.classpath"/>
-    <javac srcdir="src"
-            destdir="classes"
-            classpathref="build.classpath"/>
-    <!--rmic base="classes"
-          sourcebase="src"
-          stubversion="1.2"
-          classname="remote.RemoteImpl"
-          classpathref="build.classpath"/-->
   </target>
 
-  <target name="jar" depends="compile">
-    <jar destfile="remote.jar"
-         basedir="classes"
-         compress="false"/>
+  <target name="registry">
+    <java fork="true" classname="sun.rmi.registry.RegistryImpl">
+      <sysproperty key="java.rmi.server.codebase" value="file:${remote.home}/remote.jar file:${scala.home}/lib/scala-library.jar"/>
+    </java>
+  </target>
+
+  <target name="run" depends="compile">
+    <java fork="true" classpathref="run.classpath" classname="remote.sample.Server"/>
+  </target>
+
+  <target name="test">
+    <java classpathref="run.classpath" classname="remote.sample.Sample"/>
   </target>
 
   <target name="clean">
