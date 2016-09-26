@@ -21,7 +21,10 @@ object Remote {
 
   def replace[T](obj: Remote[T]): Object = {
     val w = cache.get(obj)
-    if (w == null) obj else w.get()
+    if (w == null) obj else {
+      val o = w.get()
+      if (o == null) obj else o
+    }
   }
 
   def rebind[T](name: String, value: T) = Naming.rebind(name, apply(value))
