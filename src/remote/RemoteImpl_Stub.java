@@ -3,6 +3,7 @@
 
 package remote;
 
+@SuppressWarnings({ "rawtypes", "deprecation" })
 public final class RemoteImpl_Stub
     extends java.rmi.server.RemoteStub
     implements remote.Remote, java.rmi.Remote
@@ -79,6 +80,7 @@ public final class RemoteImpl_Stub
 	}
     }
 
+    @SuppressWarnings("unchecked")
     public Object readResolve() throws java.io.ObjectStreamException {
         return Remote$.MODULE$.replace(this);
     }

@@ -1,12 +1,17 @@
 package remote
 
 import java.lang.ref.{Reference, WeakReference}
-import java.rmi.Naming
+import java.rmi.{Naming, RemoteException}
 import java.util.{Map, WeakHashMap}
 
-@remote trait Remote[+T] extends java.rmi.Remote {
+trait Remote[+T] extends java.rmi.Remote {
+  @throws(classOf[RemoteException])
   def map[S](f: T => S): Remote[S]
+
+  @throws(classOf[RemoteException])
   def flatMap[S](f: T => Remote[S]): Remote[S]
+
+  @throws(classOf[RemoteException])
   def get: T
 }
 
